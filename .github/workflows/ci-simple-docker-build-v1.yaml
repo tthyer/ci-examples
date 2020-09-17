@@ -1,3 +1,4 @@
+# This workflow builds and pushes the docker image using docker's v1 action
 name: Docker CI v1
 
 on:
@@ -19,6 +20,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           repository: tessthyer/${{ github.event.repository.name }}
+          # Preferably, use a dockerhub service account user
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: latest-simple-docker-build-v1
