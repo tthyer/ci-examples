@@ -1,4 +1,4 @@
-name: CI
+name: Docker CI v2
 
 on:
   push:
@@ -28,4 +28,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: tessthyer/${{ github.event.repository.name }}:latest-simple-docker-build
+          tags: tessthyer/${{ github.event.repository.name }}:latest-simple-docker-build-v2
