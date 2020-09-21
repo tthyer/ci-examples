@@ -1,0 +1,43 @@
+# This workflow builds and pushes the docker image using docker's v2 action
+# to GitHub's Container Registry (ghcr.io)
+name: Docker GHCR CI v2
+ on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # the GitHub account that the package will be written to.
+      # can be a user or organization account.
+      GITHUB_REGISTRY_ACCOUNT: Sage-Bionetworks
+
+    steps:
+      - name: Git Checkout
+        id: git_checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GHCR
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+
+          # authenticate with a GitHub personal access token,
+          # token must have package:write permission in the GITHUB_REGISTRY_ACCOUNT.
+          # at this time GITHUB_TOKENs are not supported with ghcr:
+          # https://docs.github.com/en/packages/getting-started-with-github-container-registry/migrating-to-github-container-registry-for-docker-images#authenticating-with-the-container-registry
+          username: ${{ secrets.GHCR_TOKEN_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Publish Docker Image
+        id: docker_publish
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ghcr.io/${{ env.GITHUB_REGISTRY_ACCOUNT }}/${{ github.event.repository.name }}:latest
+
