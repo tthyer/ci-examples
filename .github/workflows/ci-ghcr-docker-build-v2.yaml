@@ -12,7 +12,7 @@ jobs:
     env:
       # the GitHub account that the package will be written to.
       # can be a user or organization account.
-      GITHUB_REGISTRY_ACCOUNT: sage-bionetworks
+      GITHUB_REGISTRY_ACCOUNT: sage-bionetworks-it
 
     steps:
       - name: Git Checkout
